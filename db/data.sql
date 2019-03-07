@@ -1,5 +1,5 @@
-create database if not exists `webbin`;
-use `webbin`;
+create database if not exists `crawler`;
+use `crawler`;
 DROP TABLE IF EXISTS `enterprise`;
 CREATE TABLE `enterprise` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'PK',
