@@ -6,7 +6,6 @@
 :desc: http请求工具类
 """
 from venv import logger
-
 import requests
 
 
@@ -18,13 +17,11 @@ def get(url, params, **kwargs):
     :param kwargs:
     :return:
     """
-    response = {}
     try:
         response = requests.get(url=url, params=params, **kwargs)
     except ConnectionError as error:
-        logger.error('HttpGet请求发生错误，%s' % error)
-        response.setdefault('reason', 'connection exception!')
-        response.setdefault('code', 500)
+        logger.error('HttpGet网络请求错误，%s' % error)
+        raise error
     return response
 
 
@@ -36,11 +33,9 @@ def post(url, body, **kwargs):
     :param kwargs:
     :return:
     """
-    response = {}
     try:
         response = requests.post(url=url, json=body, **kwargs)
     except ConnectionError as error:
-        logger.error('HttpGet请求发生错误，%s' % error)
-        response.setdefault('reason', 'connection exception!')
-        response.setdefault('code', 500)
+        logger.error('HttpGet网络请求错误，%s' % error)
+        raise error
     return response

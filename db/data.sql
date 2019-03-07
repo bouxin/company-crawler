@@ -1,7 +1,7 @@
 create database if not exists `webbin`;
 use `webbin`;
-DROP TABLE IF EXISTS `company`;
-CREATE TABLE `company` (
+DROP TABLE IF EXISTS `enterprise`;
+CREATE TABLE `enterprise` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'PK',
   `name` varchar(128) CHARACTER SET utf8mb4 NOT NULL DEFAULT '-' COMMENT '公司名',
   `representative` varchar(20) CHARACTER SET utf8mb4 NOT NULL DEFAULT '-' COMMENT '法人代表',
@@ -13,7 +13,7 @@ CREATE TABLE `company` (
   `phone` varchar(20) CHARACTER SET utf8mb4 NOT NULL DEFAULT '-' COMMENT '电话',
   `email` varchar(50) CHARACTER SET utf8mb4 NOT NULL DEFAULT '-' COMMENT '邮箱',
   `setup_time` varchar(20) NOT NULL DEFAULT '-' COMMENT '成立时间',
-  `Industry` varchar(50) CHARACTER SET utf8mb4 NOT NULL DEFAULT '-' COMMENT '所属行业',
+  `industry` varchar(50) CHARACTER SET utf8mb4 NOT NULL DEFAULT '-' COMMENT '所属行业',
   `biz_scope` varchar(1200) CHARACTER SET utf8mb4 NOT NULL DEFAULT '-' COMMENT '经营范围',
   `company_type` varchar(32) CHARACTER SET utf8mb4 NOT NULL DEFAULT '-' COMMENT '公司类型',
   `registered_capital` varchar(32) CHARACTER SET utf8mb4 NOT NULL DEFAULT '-' COMMENT '注册资本',
