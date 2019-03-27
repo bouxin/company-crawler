@@ -31,9 +31,12 @@ REQUEST_HEADERS = {
 }
 
 
-def bootstrap():
+def bootstrap(keys: list):
     """ 入口函数 """
-    keys = ['Google']  # todo 查询字段设置
+    if not keys:
+        log.info('no keywords available')
+        return
+
     for key in keys:
         log.info('开始搜索关键字[%s]' % key)
         companies = TycSearchApi.search(key)
