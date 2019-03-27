@@ -15,27 +15,8 @@ connection_pool = PooledDB(creator=pymysql,
                            host=MysqlConfig.host(),
                            port=MysqlConfig.port(),
                            db=MysqlConfig.database(),
-                           username=MysqlConfig.username(),
+                           user=MysqlConfig.username(),
                            passwd=MysqlConfig.password())
-
-
-def tx_commit(sql: str, data: any):
-    """
-    事务方法
-    :param sql:
-    :param data:
-    :return:
-    """
-    connection = connection_pool.connection()
-    cursor = connection.cursor()
-    result = cursor.execute(sql, data)
-    try:
-        connection.commit()
-        return result
-    except RuntimeError as error:
-        connection.rollback()
-        log.error('事务提交失败！已回滚')
-        raise error
 
 
 def insert(data: dict):
@@ -45,21 +26,40 @@ def insert(data: dict):
     :return:
     """
     sql = 'insert into enterprise(`name`,`representative`,`address`,`region`,`city`,`district`,' \
-          '`lat_long`,`biz_status`,`credit_code`,`register_code`,`phone`,`email`,`setup_time`,`industry`, ' \
-          '`biz_scope`,`company_type`,`registered_capital`,`actual_capital`,`taxpayer_code`, ' \
-          '`organization_code`,`english_name`,`authorization`,`homepage`,`used_name`,`gmt_create`, ' \
-          '`gmt_modify`) values(%(name)s,%(representative)s,%(address)s,%(region)s,%(city)s,%(district)s,' \
-          '%(lat_long)s,%(biz_status)s,%(credit_code)s,%(register_code)s,%(phone)s,%(email)s,%(setup_time)s,' \
-          '%(industry)s,%(biz_scope)s,%(company_type)s,%(registered_capital)s,%(actual_capital)s,' \
-          '%(taxpayer_code)s,%(organization_code)s,%(english_name)s,%(authorization)s,%(homepage)s,' \
-          '%(used_name)s,now(),now()) ' \
-          'on duplicate key update `name`=%(name)s,`representative`=%(representative)s,`address`=%(address)s,' \
-          '`region`=%(region)s,`lat_long`=%(lat_long)s,`biz_status`=%(biz_status)s,`credit_code`=%(credit_code)s,' \
-          '`register_code`=%(register_code)s,`phone`=%(phone)s,`email`=%(email)s,`setup_time`=%(setup_time)s,' \
-          '`industry`=%(industry)s,`biz_scope`=%(biz_scope)s,`company_type`=%(company_type)s,' \
-          '`registered_capital`=%(registered_capital)s,`actual_capital`=%(actual_capital)s, ' \
-          '`taxpayer_code`=%(taxpayer_code)s,`organization_code`=%(organization_code)s,' \
-          '`english_name`=%(english_name)s,`authorization`=%(authorization)s,`homepage`=%(homepage)s, '\
-          '`used_name`=%(used_name)s,`gmt_modify`=now()'
-    return tx_commit(sql, data)
+          '`lat_long`,`biz_status`,`credit_code`,`register_code`,`phone`,`email`,`setup_time`,' \
+          '`industry`, `biz_scope`,`company_type`,`registered_capital`,`actual_capital`,' \
+          '`taxpayer_code`, `organization_code`,`english_name`,`authorization`,`homepage`,' \
+          '`used_name`,`gmt_create`, `gmt_modify`) ' \
+          'values(%(name)s,%(representative)s,%(address)s,%(region)s,%(city)s,%(district)s,' \
+          '%(lat_long)s,%(biz_status)s,%(credit_code)s,%(register_code)s,%(phone)s,%(email)s,' \
+          '%(setup_time)s, %(industry)s,%(biz_scope)s,%(company_type)s,%(registered_capital)s,' \
+          '%(actual_capital)s, %(taxpayer_code)s,%(organization_code)s,%(english_name)s,' \
+          '%(authorization)s,%(homepage)s, %(used_name)s,now(),now()) ' \
+          'on duplicate key update `name`=%(name)s,`representative`=%(representative)s,' \
+          '`address`=%(address)s,`region`=%(region)s,`lat_long`=%(lat_long)s,' \
+          '`biz_status`=%(biz_status)s,`credit_code`=%(credit_code)s,' \
+          '`register_code`=%(register_code)s,`phone`=%(phone)s,`email`=%(email)s,' \
+          '`setup_time`=%(setup_time)s,`industry`=%(industry)s,`biz_scope`=%(biz_scope)s,' \
+          '`company_type`=%(company_type)s,`registered_capital`=%(registered_capital)s,' \
+          '`actual_capital`=%(actual_capital)s,`taxpayer_code`=%(taxpayer_code)s,' \
+          '`organization_code`=%(organization_code)s,`english_name`=%(english_name)s,' \
+          '`authorization`=%(authorization)s,`homepage`=%(homepage)s,`used_name`=%(used_name)s,' \
+          '`gmt_modify`=now()'
+    return write_tx(sql, data)
+
+
+def write_tx(sql: str, data: any):
+    """ 写事务 """
+    connection = connection_pool.connection()
+    cursor = connection.cursor()
+    result = cursor.execute(sql, data)
+
+    try:
+        connection.commit()
+    except RuntimeError as error:
+        connection.rollback()
+        log.error('事务提交失败！已回滚')
+        raise error
+
+    return result
 
