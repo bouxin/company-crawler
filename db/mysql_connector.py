@@ -44,20 +44,22 @@ def insert(data: dict):
     :param data:
     :return:
     """
-    sql = 'insert into enterprise(`name`, `representative`, `address`, `region`, `biz_status`,' \
-          '`credit_code`, `register_code`, `phone`, `email`, `setup_time`, `industry`, `biz_scope`,' \
-          '`company_type`, `registered_capital`, `paid_capital`, `taxpayer_code`, `organization_code`,' \
-          '`english_name`, `authority`, `homepage`, `desc`, `used_name`, `insert_time`, `last_time`) ' \
-          'values(%(name)s, %(representative)s, %(address)s, %(region)s, %(bizStatus)s, %(creditCode)s, ' \
-          '%(registerCode)s, %(phone)s, %(email)s, %(setupTime)s, %(industry)s, %(bizScope)s, %(companyType)s, ' \
-          '%(registeredCapital)s, %(paidCapital)s, %(taxpayerCode)s, %(organizationCode)s, %(englishName)s, ' \
-          '%(authority)s, %(homepage)s, %(desc)s, %(usedName)s, %(insertTime)s, %(lastTime)s) ' \
-          'on duplicate key update `name`=%(name)s, `representative`=%(representative)s, `address`=%(address)s,' \
-          '`region`=%(region)s, `biz_status`=%(bizStatus)s, `credit_code`=%(creditCode)s, `register_code`=%(registerCode)s,' \
-          '`phone`=%(phone)s, `email`=%(email)s, `setup_time`=%(setupTime)s, `industry`=%(industry)s,' \
-          '`biz_scope`=%(bizScope)s, `company_type`=%(companyType)s, `registered_capital`=%(registeredCapital)s,' \
-          '`paid_capital`=%(paidCapital)s, `taxpayer_code`=%(taxpayerCode)s, `organization_code`=%(organizationCode)s,' \
-          '`english_name`=%(englishName)s, `authority`=%(authority)s, `homepage`=%(homepage)s, `desc`=%(desc)s,' \
-          '`used_name`=%(usedName)s, `insert_time`=%(insertTime)s, `last_time`=%(lastTime)s'
+    sql = 'insert into enterprise(`name`,`representative`,`address`,`region`,`city`,`district`,' \
+          '`lat_long`,`biz_status`,`credit_code`,`register_code`,`phone`,`email`,`setup_time`,`industry`, ' \
+          '`biz_scope`,`company_type`,`registered_capital`,`actual_capital`,`taxpayer_code`, ' \
+          '`organization_code`,`english_name`,`authorization`,`homepage`,`used_name`,`gmt_create`, ' \
+          '`gmt_modify`) values(%(name)s,%(representative)s,%(address)s,%(region)s,%(city)s,%(district)s,' \
+          '%(lat_long)s,%(biz_status)s,%(credit_code)s,%(register_code)s,%(phone)s,%(email)s,%(setup_time)s,' \
+          '%(industry)s,%(biz_scope)s,%(company_type)s,%(registered_capital)s,%(actual_capital)s,' \
+          '%(taxpayer_code)s,%(organization_code)s,%(english_name)s,%(authorization)s,%(homepage)s,' \
+          '%(used_name)s,now(),now()) ' \
+          'on duplicate key update `name`=%(name)s,`representative`=%(representative)s,`address`=%(address)s,' \
+          '`region`=%(region)s,`lat_long`=%(lat_long)s,`biz_status`=%(biz_status)s,`credit_code`=%(credit_code)s,' \
+          '`register_code`=%(register_code)s,`phone`=%(phone)s,`email`=%(email)s,`setup_time`=%(setup_time)s,' \
+          '`industry`=%(industry)s,`biz_scope`=%(biz_scope)s,`company_type`=%(company_type)s,' \
+          '`registered_capital`=%(registered_capital)s,`actual_capital`=%(actual_capital)s, ' \
+          '`taxpayer_code`=%(taxpayer_code)s,`organization_code`=%(organization_code)s,' \
+          '`english_name`=%(english_name)s,`authorization`=%(authorization)s,`homepage`=%(homepage)s, '\
+          '`used_name`=%(used_name)s,`gmt_modify`=now()'
     return tx_commit(sql, data)
 

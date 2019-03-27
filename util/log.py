@@ -5,9 +5,9 @@
 :date: 03/07/2019
 """
 import logging
+from urllib import parse
 
-
-logging.basicConfig(filename='../crawler.log', format='')  # todo
+logging.basicConfig(filename='../tianyancha.log', format='')  # todo
 
 
 def warn(msg: str):
@@ -25,3 +25,6 @@ def error(msg: str):
 def debug(msg: str):
     logging.debug(msg)
 
+
+if __name__ == '__main__':
+    print(parse.quote('微策略软件杭州'))
