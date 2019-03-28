@@ -7,7 +7,7 @@
 
 from DBUtils.PooledDB import PooledDB
 from util import log
-from env.settings import MysqlConfig
+from config.settings import MysqlConfig
 import pymysql
 
 connection_pool = PooledDB(creator=pymysql,
