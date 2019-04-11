@@ -16,7 +16,7 @@ SEARCH_API = 'https://api9.tianyancha.com/services/v3/search/sNorV3'
 """ 企业详情API """
 DETAIL_API = 'https://api9.tianyancha.com/services/v3/t/common/baseinfoV5'
 """ 请求验证头 """
-AUTHORIZATION = '0###oo34J0ePGhOIwh35OjSfJ0jGr71Y###1552015848536###bee60ad62826a4195ef55af25a1db2f5'
+AUTHORIZATION = '0###oo34J0ePGhOIwh35OjSfJ0jGr71Y###1554990573364###bee60ad62826a4195ef55af25a1db2f5'
 """ ua """
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36"
 """ 请求token """
@@ -67,6 +67,8 @@ class TycSearchApi:
         if not ok or code != 200:
             log.error('%s-%s-%s' %
                       (time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()), code, message))
+            return None
+
         try:
             api_result = http_result.json()  # api响应数据
         except RuntimeError as error:
@@ -122,7 +124,8 @@ class TycDataBuilder:
         enterprise = dict()
         for corp in companies:
             enterprise = cls.produce(corp, enterprise)
-            mysql_connector.insert(enterprise)
+            print(enterprise)
+            # mysql_connector.insert(enterprise)
             time.sleep(0.5)
             enterprise.clear()
 

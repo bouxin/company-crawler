@@ -1,30 +1,32 @@
 #!/usr/bin/python3
 # -*-: coding: utf-8 -*-
 """
-:author: albert
-:date: 03/07/2019
+:author: lubosson
+:date: 2019-04-11
+:desc:
 """
 import logging
-from urllib import parse as url_encoder
 
-logging.basicConfig(filename='../tianyancha.log', format='')  # todo
+LOG_FORMAT = '%(asctime)s - tianyancha-spider - %(levelname)s - %(funcName)s - %(lineno)d - %(message)s'
+logging.basicConfig(filename='tianyancha.log',
+                    format=LOG_FORMAT,
+                    datefmt='%m/%d/%Y %H:%M:%S')
 
-
-def warn(msg: str):
-    logging.warning(msg)
+logger = logging.getLogger()
 
 
 def info(msg: str):
-    logging.info(msg)
-
-
-def error(msg: str):
-    logging.error(msg)
+    logger.info(msg)
 
 
 def debug(msg: str):
-    logging.debug(msg)
+    logger.debug(msg)
 
 
-if __name__ == '__main__':
-    print(url_encoder.quote('微策略软件杭州'))
+def warn(msg: str):
+    logger.warning(msg)
+
+
+def error(msg: str):
+    logger.error(msg)
+
