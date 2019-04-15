@@ -8,7 +8,7 @@ import time
 import urllib3
 from urllib import parse as url_encoder
 from util import httpclient, log
-from db import mysql_connector
+from db import mysql_connector as mydb
 urllib3.disable_warnings()
 
 """ 天眼查搜索API """
@@ -124,8 +124,8 @@ class TycDataBuilder:
         enterprise = dict()
         for corp in companies:
             enterprise = cls.produce(corp, enterprise)
-            print(enterprise)
-            # mysql_connector.insert(enterprise)
+            # print(enterprise)
+            mydb.insert(enterprise)
             time.sleep(0.5)
             enterprise.clear()
 

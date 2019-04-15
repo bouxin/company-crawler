@@ -20,7 +20,6 @@ def timestamp2datetime(timestamp: int):
 
 if __name__ == '__main__':
     ts = 1554990573364
-
     print(timestamp2datetime(ts))
 
 
