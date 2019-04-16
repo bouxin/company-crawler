@@ -6,8 +6,11 @@
 """
 from tianyancha import crawler as TycCrawler
 
+app = TycCrawler
+
 if __name__ == '__main__':
     keys = ['Google中国']  # todo 查询字段设置
-    TycCrawler.bootstrap(keys)
+    app.load_keys(keys)
+    app.start()
 
 

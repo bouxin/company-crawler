@@ -31,8 +31,13 @@ REQUEST_HEADERS = {
 }
 
 
-def bootstrap(keys: list):
+def load_keys(keys: list):
+    globals().setdefault('keywords', keys)
+
+
+def start():
     """ 入口函数 """
+    keys = globals().get('keywords')
     if not keys:
         log.info('no keywords available')
         return
@@ -124,8 +129,8 @@ class TycDataBuilder:
         enterprise = dict()
         for corp in companies:
             enterprise = cls.produce(corp, enterprise)
-            # print(enterprise)
-            mydb.insert(enterprise)
+            print(enterprise)
+            # mydb.insert(enterprise)
             time.sleep(0.5)
             enterprise.clear()
 
