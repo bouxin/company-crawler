@@ -15,10 +15,10 @@ urllib3.disable_warnings()
 SEARCH_API = 'https://api9.tianyancha.com/services/v3/search/sNorV3'
 """ 企业详情API """
 DETAIL_API = 'https://api9.tianyancha.com/services/v3/t/common/baseinfoV5'
-""" 请求验证头 """
-AUTHORIZATION = '0###oo34J0WVDdeu_k1O-sWPxFpg9WJ4###1555940540033###028a568b0150721d810d5f4417e03650'
 """ ua """
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36"
+""" 请求验证头 """
+AUTHORIZATION = '0###oo34J0WVDdeu_k1O-sWPxFpg9WJ4###1555940540033###028a568b0150721d810d5f4417e03650'
 """ 请求token """
 X_AUTH_TOKEN = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxODg3NTg5MjA3NSIsImlhdCI6MTU1NTk0MDU3MiwiZXhwIjoxNTU4NTMyNTcyfQ.lCJNDWQK0gD3fp9ieIlnMEzwmi00zkBqyHShdvHnspFzZQmgPHhHJAUY7mVbKY_AFk2Xhk82jMP99Q6a0wlmEQ"
 """ 天眼查头信息 """
@@ -65,7 +65,7 @@ class TycSearchApi:
             "sortType": 0
         }
         url = SEARCH_API + "/" + url_encoder.quote(key)
-        http_result = httpclient.get(url=url, params=payload, headers=REQUEST_HEADERS, verify=False)
+        http_result = httpclient.get(url=url, params=payload, headers=REQUEST_HEADERS)
         time.sleep(2)
 
         ok, message, code = http_result.ok, http_result.reason, http_result.status_code
@@ -91,7 +91,7 @@ class TycSearchApi:
     @staticmethod
     def search_detail(company_id: int):
         url = DETAIL_API + "/" + str(company_id)
-        http_result = httpclient.get(url=url, params=None, headers=REQUEST_HEADERS, verify=False)
+        http_result = httpclient.get(url=url, params=None, headers=REQUEST_HEADERS)
         time.sleep(2)
 
         ok, message, code = http_result.ok, http_result.reason, http_result.status_code

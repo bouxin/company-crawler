@@ -7,6 +7,8 @@
 """
 from util import log
 import requests
+import urllib3
+urllib3.disable_warnings()
 
 
 def get(url, params, **kwargs):
@@ -18,7 +20,7 @@ def get(url, params, **kwargs):
     :return:
     """
     try:
-        response = requests.get(url=url, params=params, **kwargs)
+        response = requests.get(url=url, params=params, verify=False, **kwargs)
     except Exception as error:
         log.error('HttpGet网络请求错误，%s' % error)
         raise error
@@ -34,7 +36,7 @@ def post(url, body, **kwargs):
     :return:
     """
     try:
-        response = requests.post(url=url, json=body, **kwargs)
+        response = requests.post(url=url, json=body, verify=False, **kwargs)
     except Exception as error:
         log.error('HttpGet网络请求错误，%s' % error)
         raise error
