@@ -16,11 +16,11 @@ SEARCH_API = 'https://api9.tianyancha.com/services/v3/search/sNorV3'
 """ 企业详情API """
 DETAIL_API = 'https://api9.tianyancha.com/services/v3/t/common/baseinfoV5'
 """ 请求验证头 """
-AUTHORIZATION = '0###oo34J0ePGhOIwh35OjSfJ0jGr71Y###1554990573364###bee60ad62826a4195ef55af25a1db2f5'
+AUTHORIZATION = '0###oo34J0WVDdeu_k1O-sWPxFpg9WJ4###1555940540033###028a568b0150721d810d5f4417e03650'
 """ ua """
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36"
 """ 请求token """
-X_AUTH_TOKEN = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxODEwMDE3NzI5NSIsImlhdCI6MTU1MTk1MDQ0MCwiZXhwIjoxNTU0NTQyNDQwfQ.364iry9elpPFO8eyoq9F0oEQGy7BydPCGu0nTHjpgLswO3yhl6xQYu22daUw_ZFpuBv_qg_KjBHH45vVU68OcA"
+X_AUTH_TOKEN = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxODg3NTg5MjA3NSIsImlhdCI6MTU1NTk0MDU3MiwiZXhwIjoxNTU4NTMyNTcyfQ.lCJNDWQK0gD3fp9ieIlnMEzwmi00zkBqyHShdvHnspFzZQmgPHhHJAUY7mVbKY_AFk2Xhk82jMP99Q6a0wlmEQ"
 """ 天眼查头信息 """
 REQUEST_HEADERS = {
     "User-Agent": UA,

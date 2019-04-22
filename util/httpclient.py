@@ -19,7 +19,7 @@ def get(url, params, **kwargs):
     """
     try:
         response = requests.get(url=url, params=params, **kwargs)
-    except ConnectionError as error:
+    except Exception as error:
         log.error('HttpGet网络请求错误，%s' % error)
         raise error
     return response
@@ -35,7 +35,7 @@ def post(url, body, **kwargs):
     """
     try:
         response = requests.post(url=url, json=body, **kwargs)
-    except ConnectionError as error:
+    except Exception as error:
         log.error('HttpGet网络请求错误，%s' % error)
         raise error
     return response
