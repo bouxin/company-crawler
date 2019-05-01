@@ -5,9 +5,8 @@
 #### 运行项目
 1. 安装依赖
     ```bash
-    pip install -r requirements.txt
+    pip install -r requirements.txt    # 当提示权限不足时，使用sudoer权限执行即可
     ```
-    当提示权限不足时，使用sudoer权限执行即可
 2. 生成数据结构  
 执行data.sql脚本生成数据结构，修改环境配置
 3. 设置关键字  
@@ -20,23 +19,28 @@
 ```
 ├── LICENSE
 ├── README.md
+├── config
+│   ├── __init__.py
+│   ├── env.py
+│   └── settings.py
 ├── db
 │   ├── __init__.py
 │   ├── data.sql
 │   └── mysql_connector.py
-├── env
+├── qichacha
 │   ├── __init__.py
-│   └── settings.py
+│   └── crawler.py
 ├── requirements.txt
 ├── tianyancha
 │   ├── __init__.py
 │   └── crawler.py
-├── tianyancha.log
 ├── tianyancha.py
 └── util
-    ├── __init__.py
-    ├── httpclient.py
-    └── log.py
+    ├── __init__.py
+    ├── date.py
+    ├── httpclient.py
+    └── log.py
+
 ```
 
 

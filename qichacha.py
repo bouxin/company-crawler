@@ -1,21 +1,21 @@
 #!/usr/bin/python3
 # -*-: coding: utf-8 -*-
 """
-:author: lubosin
-:date: 03/28/2019
+:author: lubosson
+:date: 2019-04-16
+:desc:
 """
-from tianyancha import crawler as TycCrawler
+from qichacha import crawler as QccCrawler
 from util import log
 import urllib3
 urllib3.disable_warnings()
 
 
-log.init("tianyancha.log")
-app = TycCrawler
+log.init("qichacha.log")
+app = QccCrawler
 
 if __name__ == '__main__':
-    keys = ['Google中国']  # todo 查询字段设置
+    keys = ['Google中国']
     app.load_keys(keys)
     app.start()
-
 

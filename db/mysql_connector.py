@@ -6,17 +6,18 @@
 """
 
 from DBUtils.PooledDB import PooledDB
-from util import log
-from config.settings import MysqlConfig
+from config.env import MysqlEnviron
+import logging as log
 import pymysql
+
 
 connection_pool = PooledDB(creator=pymysql,
                            maxconnections=20,
-                           host=MysqlConfig.host(),
-                           port=MysqlConfig.port(),
-                           db=MysqlConfig.database(),
-                           user=MysqlConfig.username(),
-                           passwd=MysqlConfig.password())
+                           host=MysqlEnviron.host(),
+                           port=MysqlEnviron.port(),
+                           db=MysqlEnviron.database(),
+                           user=MysqlEnviron.username(),
+                           passwd=MysqlEnviron.password())
 
 
 def insert(data: dict):

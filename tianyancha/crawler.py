@@ -5,11 +5,10 @@
 :date: 03/08/2019
 """
 import time
-import urllib3
+import logging as log
 from urllib import parse as url_encoder
-from util import httpclient, log
-from db import mysql_connector
-urllib3.disable_warnings()
+from util import httpclient
+from db import mysql_connector as mydb
 
 """ 天眼查搜索API """
 SEARCH_API = 'https://api9.tianyancha.com/services/v3/search/sNorV3'
@@ -31,8 +30,13 @@ REQUEST_HEADERS = {
 }
 
 
-def bootstrap(keys: list):
+def load_keys(keys: list):
+    globals().setdefault('keywords', keys)
+
+
+def start():
     """ 入口函数 """
+    keys = globals().get('keywords')
     if not keys:
         log.info('no keywords available')
         return
@@ -60,13 +64,15 @@ class TycSearchApi:
             "sortType": 0
         }
         url = SEARCH_API + "/" + url_encoder.quote(key)
-        http_result = httpclient.get(url=url, params=payload, headers=REQUEST_HEADERS, verify=False)
+        http_result = httpclient.get(url=url, params=payload, headers=REQUEST_HEADERS)
         time.sleep(2)
 
         ok, message, code = http_result.ok, http_result.reason, http_result.status_code
         if not ok or code != 200:
             log.error('%s-%s-%s' %
                       (time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()), code, message))
+            return None
+
         try:
             api_result = http_result.json()  # api响应数据
         except RuntimeError as error:
@@ -84,7 +90,7 @@ class TycSearchApi:
     @staticmethod
     def search_detail(company_id: int):
         url = DETAIL_API + "/" + str(company_id)
-        http_result = httpclient.get(url=url, params=None, headers=REQUEST_HEADERS, verify=False)
+        http_result = httpclient.get(url=url, params=None, headers=REQUEST_HEADERS)
         time.sleep(2)
 
         ok, message, code = http_result.ok, http_result.reason, http_result.status_code
@@ -119,45 +125,46 @@ class TycDataBuilder:
             log.info('no companies available')
             return
 
-        enterprise = dict()
-        for corp in companies:
-            enterprise = cls.produce(corp, enterprise)
-            mysql_connector.insert(enterprise)
+        target = dict()
+        for src in companies:
+            target = cls.copy_properties(src, target)
+            log.info(target)
+            # mydb.insert(enterprise)
             time.sleep(0.5)
-            enterprise.clear()
+            target.clear()
 
     @classmethod
-    def produce(cls, corp: dict, enterprise: dict):
+    def copy_properties(cls, source: dict, target: dict):
         """ 构建存储对象 """
-        enterprise['name'] = cls.get_company_name(corp)
-        enterprise['representative'] = cls.get_representative(corp)
-        enterprise['address'] = cls.get_address(corp)
-        enterprise['region'] = cls.get_region(corp)
-        enterprise['city'] = cls.get_city(corp)
-        enterprise['district'] = cls.get_district(corp)
-        enterprise['biz_status'] = cls.get_biz_status(corp)
-        enterprise['credit_code'] = cls.get_credit_code(corp)
-        enterprise['email'] = cls.get_email(corp)
-        enterprise['phone'] = cls.get_work_phone(corp)
-        enterprise['biz_scope'] = cls.get_biz_scope(corp)
-        enterprise['company_type'] = cls.get_company_type(corp)
-        enterprise['taxpayer_code'] = cls.get_taxpayer_code(corp)
-        enterprise['registered_capital'] = cls.get_registered_capital(corp)
-        enterprise['lat_long'] = cls.get_lat_long(corp)
-        enterprise['setup_time'] = cls.get_setup_time(corp)
+        target['name'] = cls.get_company_name(source)
+        target['representative'] = cls.get_representative(source)
+        target['address'] = cls.get_address(source)
+        target['region'] = cls.get_region(source)
+        target['city'] = cls.get_city(source)
+        target['district'] = cls.get_district(source)
+        target['biz_status'] = cls.get_biz_status(source)
+        target['credit_code'] = cls.get_credit_code(source)
+        target['email'] = cls.get_email(source)
+        target['phone'] = cls.get_work_phone(source)
+        target['biz_scope'] = cls.get_biz_scope(source)
+        target['company_type'] = cls.get_company_type(source)
+        target['taxpayer_code'] = cls.get_taxpayer_code(source)
+        target['registered_capital'] = cls.get_registered_capital(source)
+        target['lat_long'] = cls.get_lat_long(source)
+        target['setup_time'] = cls.get_setup_time(source)
 
-        company_id = corp.get('id')
+        company_id = source.get('id')
         detail = TycSearchApi.search_detail(company_id)
-        enterprise['homepage'] = cls.get_homepage(detail)
-        enterprise['register_code'] = cls.get_register_code(detail)
-        enterprise['organization_code'] = cls.get_organization_code(detail)
-        enterprise['english_name'] = cls.get_company_english(detail)
-        enterprise['authorization'] = cls.get_register_organization(detail)
-        enterprise['actual_capital'] = cls.get_real_capital(detail)
-        enterprise['industry'] = cls.get_industry(detail)
-        enterprise['used_name'] = cls.get_company_used_name(detail)
+        target['homepage'] = cls.get_homepage(detail)
+        target['register_code'] = cls.get_register_code(detail)
+        target['organization_code'] = cls.get_organization_code(detail)
+        target['english_name'] = cls.get_company_english(detail)
+        target['authorization'] = cls.get_register_organization(detail)
+        target['actual_capital'] = cls.get_real_capital(detail)
+        target['industry'] = cls.get_industry(detail)
+        target['used_name'] = cls.get_company_used_name(detail)
 
-        return enterprise
+        return target
 
     @classmethod
     def get_company_name(cls, company: dict) -> str:

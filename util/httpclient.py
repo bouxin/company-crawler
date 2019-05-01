@@ -5,7 +5,7 @@
 :date: 02/28/2019
 :desc: http请求工具类
 """
-from util import log
+import logging as log
 import requests
 
 
@@ -18,8 +18,8 @@ def get(url, params, **kwargs):
     :return:
     """
     try:
-        response = requests.get(url=url, params=params, **kwargs)
-    except ConnectionError as error:
+        response = requests.get(url=url, params=params, verify=False, **kwargs)
+    except Exception as error:
         log.error('HttpGet网络请求错误，%s' % error)
         raise error
     return response
@@ -34,8 +34,8 @@ def post(url, body, **kwargs):
     :return:
     """
     try:
-        response = requests.post(url=url, json=body, **kwargs)
-    except ConnectionError as error:
+        response = requests.post(url=url, json=body, verify=False, **kwargs)
+    except Exception as error:
         log.error('HttpGet网络请求错误，%s' % error)
         raise error
     return response
