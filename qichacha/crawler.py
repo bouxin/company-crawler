@@ -29,7 +29,7 @@ REQUEST_HEADERS = {
 """
 授权企查查小程序返回TOKEN 过期时间1h 
 """
-TOKEN = "afe342af970f8e0da9c884adc94b03e2"
+TOKEN = "9a62aaad7cda6c73a35d598f93e8d169"
 
 
 def start():
@@ -120,7 +120,8 @@ class QccDataBuilder:
         results = res.get('Result')
         for src in results:
             target = cls.copy_properties(src, target)
-            mydb.insert(target)
+            log.info(target)
+            # mydb.insert(target)
             sleep(0.5)
             target.clear()
 
@@ -143,8 +144,10 @@ class QccDataBuilder:
         target['lat_long'] = cls.get_lat_long(source)
         target['setup_time'] = cls.get_setup_time(source)
 
-        company_key_no = source.get('keyNo')
+        company_key_no = source.get('KeyNo')
         detail = QccSearchApi.search_detail(company_key_no)
+        if detail:
+            detail = detail.get('Company')
         target['homepage'] = cls.get_homepage(detail)
         target['register_code'] = cls.get_register_code(detail)
         target['organization_code'] = cls.get_organization_code(detail)
@@ -158,90 +161,135 @@ class QccDataBuilder:
 
     @classmethod
     def get_company_name(cls, source):
-        pass
+        name = source.get("Name")
+        return name.replace('<em>', '').replace('</em>', '').strip() if name else '-'
 
     @classmethod
     def get_representative(cls, source):
-        pass
+        representative = source.get('OperName')
+        if representative:
+            return representative.replace('<em>', '').replace('</em>', '').strip()
+        else:
+            return '-'
 
     @classmethod
     def get_address(cls, source):
-        pass
+        address = source.get('Address')
+        return address.strip() if address else '-'
 
     @classmethod
     def get_region(cls, source):
+        # todo
+        # region_short_code = source.get('Province')
+        # region = distinct.get(region_short_code)
+        # return region if region else '-'
         pass
 
     @classmethod
     def get_city(cls, source):
+        # todo
         pass
 
     @classmethod
     def get_district(cls, source):
+        # todo
         pass
 
     @classmethod
     def get_biz_status(cls, source):
-        pass
+        company_status = source.get('Status')
+        return company_status if company_status else '-'
 
     @classmethod
     def get_credit_code(cls, source):
-        pass
+        credit_code = source.get('CreditCode')
+        return credit_code if credit_code else '-'
 
     @classmethod
     def get_email(cls, source):
-        pass
+        email = source.get('Email')
+        return email.strip() if email else '-'
 
     @classmethod
     def get_work_phone(cls, source):
-        pass
+        phone = source.get('ContactNumber')
+        if phone:
+            return phone.replace('\t', '').replace('\r', '').strip()
+        else:
+            return '-'
 
     @classmethod
     def get_biz_scope(cls, source):
-        pass
+        scope = source.get('Scope')
+        if scope:
+            return scope.replace('<em>', '').replace('</em>', '').strip()
+        else:
+            return '-'
 
     @classmethod
     def get_company_type(cls, source):
-        pass
+        company_type = source.get('EconKind')
+        if company_type:
+            return company_type.strip()
+        else:
+            return '-'
 
     @classmethod
     def get_taxpayer_code(cls, source):
-        pass
+        """ 三码合一 """
+        taxpayer_code = source.get('CreditCode')
+        return taxpayer_code if taxpayer_code else '-'
 
     @classmethod
     def get_registered_capital(cls, source):
-        pass
+        registered_capi = source.get('RegistCapi')
+        return registered_capi if registered_capi else '-'
 
     @classmethod
     def get_lat_long(cls, source):
-        pass
+        lat = source.get('X')
+        long = source.get('Y')
+        location = {
+            'lat': lat if lat else '-',
+            'long': long if long else '-'
+        }
+        return str(location)
 
     @classmethod
     def get_setup_time(cls, source):
-        pass
+        setup_time = source.get('StartDate')
+        return setup_time if setup_time else '-'
 
     @classmethod
     def get_homepage(cls, source):
-        pass
+        if not source:
+            return '-'
+        homepage = source.get('WebSite')
+        return homepage[0:30] if homepage else '-'
 
     @classmethod
     def get_register_code(cls, source):
-        pass
+        register_code = source.get('No')
+        return register_code if register_code else '-'
 
     @classmethod
     def get_organization_code(cls, source):
-        pass
+        org_code = source.get('OrgNo')
+        return org_code if org_code else '-'
 
     @classmethod
     def get_company_english(cls, source):
-        pass
+        engname = source.get('EnglishName')
+        return engname if engname else '-'
 
     @classmethod
     def get_register_organization(cls, source):
-        pass
+        regi_org = source.get('BelongOrg')
+        return regi_org if regi_org else '-'
 
     @classmethod
     def get_real_capital(cls, source):
+        # todo
         pass
 
     @classmethod

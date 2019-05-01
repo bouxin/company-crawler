@@ -4,10 +4,11 @@ CREATE TABLE `enterprise` (
   `name` varchar(128) CHARACTER SET utf8mb4 NOT NULL DEFAULT '-' COMMENT '公司名',
   `representative` varchar(40) CHARACTER SET utf8mb4 NOT NULL DEFAULT '-' COMMENT '法人代表',
   `address` varchar(200) CHARACTER SET utf8mb4 NOT NULL DEFAULT '-' COMMENT '公司地址',
-  `region` varchar(15) CHARACTER SET utf8mb4 NOT NULL DEFAULT '-' COMMENT '所属地区',
+  `region` varchar(15) CHARACTER SET utf8mb4 NOT NULL DEFAULT '-' COMMENT '所属地区(省)',
   `city` varchar(15) character set utf8mb4 not null default '-' COMMENT '城市',
   `district` varchar(15) character set utf8mb4 not null default '-' COMMENT '区/县',
-  `lat_long` varchar(80) character set utf8mb4 not null default '-' comment '经纬度，json',
+  `lat_long` varchar(80) character set utf8mb4 not null default '-'
+  comment '经纬度，json -> {"lat": "30.18484477830133", "long": "120.06383340659741"}',
   `biz_status` varchar(20) CHARACTER SET utf8mb4 NOT NULL DEFAULT '-' COMMENT '经营状态',
   `credit_code` varchar(32) CHARACTER SET utf8mb4 NOT NULL DEFAULT '-' COMMENT '统一社会信用代码',
   `register_code` varchar(32) CHARACTER SET utf8mb4 NOT NULL DEFAULT '-' COMMENT '注册号',
