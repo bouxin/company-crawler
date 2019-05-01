@@ -30,7 +30,7 @@ CREATE TABLE `enterprise` (
   `gmt_modify` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后操作时间',
   PRIMARY KEY (`id`),
 #   index uni_key() comment '自行添加索引',
-  unique key (`credit_code`, `register_code`)
+  unique key uk_credit_reg_code(`credit_code`, `register_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT '企业信息表';
 
 # drop table if exists `keyword`;

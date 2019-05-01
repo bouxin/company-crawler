@@ -5,10 +5,8 @@
 :date: 02/28/2019
 :desc: http请求工具类
 """
-from util import log
+import logging as log
 import requests
-import urllib3
-urllib3.disable_warnings()
 
 
 def get(url, params, **kwargs):

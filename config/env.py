@@ -5,8 +5,8 @@
 :date: 2019-04-11
 :desc:
 """
+import logging as log
 from config.settings import MysqlConfig
-from util import log
 
 
 ENV = 'development'  # 环境变量

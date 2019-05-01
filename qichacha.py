@@ -6,7 +6,12 @@
 :desc:
 """
 from qichacha import crawler as QccCrawler
+from util import log
+import urllib3
+urllib3.disable_warnings()
 
+
+log.init("qichacha.log")
 app = QccCrawler
 
 if __name__ == '__main__':

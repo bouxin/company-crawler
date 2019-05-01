@@ -6,27 +6,28 @@
 :desc:
 """
 import logging
-
-LOG_FORMAT = '%(asctime)s - tianyancha-spider - %(levelname)s - %(funcName)s - %(lineno)d - %(message)s'
-logging.basicConfig(filename='tianyancha.log',
-                    format=LOG_FORMAT,
-                    datefmt='%m/%d/%Y %H:%M:%S')
-
-logger = logging.getLogger()
+import os
+from logging.handlers import TimedRotatingFileHandler
 
 
-def info(msg: str):
-    logger.info(msg)
+def init(filename):
+    logger = logging.getLogger()
+    os.getcwd()
+    handler = TimedRotatingFileHandler(filename, 'D', 1, 7)
+    fmt = '%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s'
+    formatter = logging.Formatter(fmt=fmt, datefmt='%m/%d/%Y %H:%M:%S')
+
+    handler.setFormatter(formatter)
+    handler.setLevel(logging.INFO)
+    # 屏幕输出
+    console = logging.StreamHandler()
+    console.setFormatter(formatter)
+    console.setLevel(logging.INFO)
+    logger.addHandler(console)
+    logger.addHandler(handler)
+    logger.setLevel(logging.INFO)
 
 
-def debug(msg: str):
-    logger.debug(msg)
 
 
-def warn(msg: str):
-    logger.warning(msg)
-
-
-def error(msg: str):
-    logger.error(msg)
 

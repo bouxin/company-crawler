@@ -5,11 +5,10 @@
 :date: 03/08/2019
 """
 import time
-import urllib3
+import logging as log
 from urllib import parse as url_encoder
-from util import httpclient, log
+from util import httpclient
 from db import mysql_connector as mydb
-urllib3.disable_warnings()
 
 """ 天眼查搜索API """
 SEARCH_API = 'https://api9.tianyancha.com/services/v3/search/sNorV3'
@@ -129,7 +128,7 @@ class TycDataBuilder:
         target = dict()
         for src in companies:
             target = cls.copy_properties(src, target)
-            print(target)
+            log.info(target)
             # mydb.insert(enterprise)
             time.sleep(0.5)
             target.clear()

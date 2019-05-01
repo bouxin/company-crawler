@@ -6,11 +6,10 @@
 :date: 2019-04-15
 :desc:
 """
+import logging as log
 from json import JSONDecodeError
-
 from time import sleep
-
-from util import httpclient, log
+from util import httpclient
 from db import mysql_connector as mydb
 
 """ 关键字搜索API """
@@ -71,7 +70,7 @@ class QccSearchApi:
         message, code = httpret.reason, httpret.status_code
 
         if code != 200:
-            log.warn('http error, %s-%s' % (code, message))
+            log.warning('http error, %s-%s' % (code, message))
             return None
 
         try:
@@ -98,7 +97,7 @@ class QccSearchApi:
         message, code = httpresult.reason, httpresult.status_code
 
         if code != 200:
-            log.warn('http error, %s-%s' % (code, message))
+            log.warning('http error, %s-%s' % (code, message))
             return None
 
         try:
