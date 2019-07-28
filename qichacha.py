@@ -11,7 +11,7 @@ import urllib3
 urllib3.disable_warnings()
 
 
-log.init("qichacha.log")
+log.set_file("qichacha.log")
 app = QccCrawler
 
 if __name__ == '__main__':

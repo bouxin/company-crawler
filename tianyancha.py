@@ -10,7 +10,7 @@ import urllib3
 urllib3.disable_warnings()
 
 
-log.init("tianyancha.log")
+log.set_file("tianyancha.log")
 app = TycCrawler
 
 if __name__ == '__main__':

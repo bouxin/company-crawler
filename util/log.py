@@ -10,7 +10,7 @@ import os
 from logging.handlers import TimedRotatingFileHandler
 
 
-def init(filename):
+def set_file(filename):
     logger = logging.getLogger()
     os.getcwd()
     handler = TimedRotatingFileHandler(filename, 'D', 1, 7)

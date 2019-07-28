@@ -97,6 +97,7 @@ class TycSearchApi:
         if not ok or code != 200:
             log.error('%s-%s-%s' %
                       (time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()), code, message))
+            return None
         try:
             api_result = http_result.json()  # api响应数据
         except RuntimeError as error:

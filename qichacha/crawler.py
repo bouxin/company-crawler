@@ -27,7 +27,8 @@ REQUEST_HEADERS = {
     "Cookie": COOKIE
 }
 """
-授权企查查小程序返回TOKEN 过期时间1h 
+授权企查查小程序返回TOKEN 过期时间1h, 自行更新 
+可走代理方式模拟应用登陆获取该token
 """
 TOKEN = "9a62aaad7cda6c73a35d598f93e8d169"
 
