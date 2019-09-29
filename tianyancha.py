@@ -14,7 +14,7 @@ log.set_file("tianyancha.log")
 app = TycCrawler
 
 if __name__ == '__main__':
-    keys = ['Google中国']  # todo 查询字段设置
+    keys = ['西湖龙井']  # todo 查询字段设置
     app.load_keys(keys)
     app.start()
 

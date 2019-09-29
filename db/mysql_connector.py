@@ -27,7 +27,7 @@ def insert(data: dict):
     :param data:
     :return:
     """
-    sql = 'insert into enterprise(`name`,`representative`,`address`,`region`,`city`,`district`,' \
+    sql = 'insert into company(`name`,`representative`,`address`,`region`,`city`,`district`,' \
           '`lat_long`,`biz_status`,`credit_code`,`register_code`,`phone`,`email`,`setup_time`,' \
           '`industry`, `biz_scope`,`company_type`,`registered_capital`,`actual_capital`,' \
           '`taxpayer_code`, `organization_code`,`english_name`,`authorization`,`homepage`,' \

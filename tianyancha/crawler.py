@@ -21,12 +21,13 @@ def start():
     """ 入口函数 """
     keys = globals().get('keywords', list())
     for key in keys:
-        log.info('开始搜索关键字[%s]' % key)
         raw_companies = tyc_client.search(key)
+        cost_time = 2 * raw_companies.__len__() + 4
+        log.info('正在处理爬取[%s]，大概需要%s秒' % (key, cost_time))
         # company对象
         company = Company()
-        company.keyword = key
         for raw_company in raw_companies:
+            company.keyword = key
             manager.assembly(company, raw_company)
             # company detail
             raw_company_detail = tyc_client.search_detail(raw_company.get('id'))
