@@ -27,21 +27,21 @@ class MysqlEnviron:
 
     @staticmethod
     def host():
-        return MysqlEnviron.CONFIG.get('host', '127.0.0.1')
+        return MysqlEnviron.CONFIG.get('host')
 
     @staticmethod
     def port():
-        return MysqlEnviron.CONFIG.get('port', 3306)
+        return MysqlEnviron.CONFIG.get('port')
 
     @staticmethod
     def database():
-        return MysqlEnviron.CONFIG.get('db', 'geek')
+        return MysqlEnviron.CONFIG.get('db')
 
     @staticmethod
     def username():
-        return MysqlEnviron.CONFIG.get('username', 'geek')
+        return MysqlEnviron.CONFIG.get('username')
 
     @staticmethod
     def password():
-        return MysqlEnviron.CONFIG.get('password', 'Geek@123...')
+        return MysqlEnviron.CONFIG.get('password')
 

@@ -7,6 +7,7 @@
 
 from DBUtils.PooledDB import PooledDB
 from config.env import MysqlEnviron
+from db.model.model import Company
 import logging as log
 import pymysql
 
@@ -30,12 +31,12 @@ def insert(data: dict):
           '`lat_long`,`biz_status`,`credit_code`,`register_code`,`phone`,`email`,`setup_time`,' \
           '`industry`, `biz_scope`,`company_type`,`registered_capital`,`actual_capital`,' \
           '`taxpayer_code`, `organization_code`,`english_name`,`authorization`,`homepage`,' \
-          '`used_name`,`gmt_create`, `gmt_modify`) ' \
+          '`used_name`,`create_at`, `modify_at`, `search_key`) ' \
           'values(%(name)s,%(representative)s,%(address)s,%(region)s,%(city)s,%(district)s,' \
           '%(lat_long)s,%(biz_status)s,%(credit_code)s,%(register_code)s,%(phone)s,%(email)s,' \
           '%(setup_time)s, %(industry)s,%(biz_scope)s,%(company_type)s,%(registered_capital)s,' \
           '%(actual_capital)s, %(taxpayer_code)s,%(organization_code)s,%(english_name)s,' \
-          '%(authorization)s,%(homepage)s, %(used_name)s,now(),now()) ' \
+          '%(authorization)s,%(homepage)s, %(used_name)s,now(),now(), %(keyword)s) ' \
           'on duplicate key update `name`=%(name)s,`representative`=%(representative)s,' \
           '`address`=%(address)s,`region`=%(region)s,`lat_long`=%(lat_long)s,' \
           '`biz_status`=%(biz_status)s,`credit_code`=%(credit_code)s,' \
@@ -45,7 +46,7 @@ def insert(data: dict):
           '`actual_capital`=%(actual_capital)s,`taxpayer_code`=%(taxpayer_code)s,' \
           '`organization_code`=%(organization_code)s,`english_name`=%(english_name)s,' \
           '`authorization`=%(authorization)s,`homepage`=%(homepage)s,`used_name`=%(used_name)s,' \
-          '`gmt_modify`=now()'
+          '`modify_at`=now()'
     return write_tx(sql, data)
 
 

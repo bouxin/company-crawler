@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS `enterprise`;
-CREATE TABLE `enterprise` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'PK',
+DROP TABLE IF EXISTS `company`;
+CREATE TABLE `company` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT primary key COMMENT 'PK',
   `name` varchar(128) CHARACTER SET utf8mb4 NOT NULL DEFAULT '-' COMMENT '公司名',
   `representative` varchar(40) CHARACTER SET utf8mb4 NOT NULL DEFAULT '-' COMMENT '法人代表',
   `address` varchar(200) CHARACTER SET utf8mb4 NOT NULL DEFAULT '-' COMMENT '公司地址',
@@ -26,20 +26,38 @@ CREATE TABLE `enterprise` (
   `authorization` varchar(50) CHARACTER SET utf8mb4 NOT NULL DEFAULT '-' COMMENT '登记机关',
   `homepage` varchar(30) CHARACTER SET utf8mb4 NOT NULL DEFAULT '-' COMMENT '公司官网',
   `used_name` varchar(128) CHARACTER SET utf8mb4 NOT NULL DEFAULT '-' COMMENT '公司曾用名',
-#   `search_key` varchar(56) character set utf8mb4 not null default '-' comment '搜索关键字',
-  `gmt_create` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '插入时间',
-  `gmt_modify` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后操作时间',
-  PRIMARY KEY (`id`),
-#   index uni_key() comment '自行添加索引',
-  unique key uk_credit_reg_code(`credit_code`, `register_code`)
+  `search_key` varchar(56) character set utf8mb4 not null default '-' comment '搜索关键字',
+  `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '插入时间',
+  `modify_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后操作时间',
+#   index un_key() comment '联合索引',
+  unique key uq_credit_reg_code(`credit_code`, `register_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT '企业信息表';
+
+
+drop table if exists `province`;
+create table `province`(
+  `id` unsigned integer not null primary key,
+  `short` char(3) not null default 'CN' comment '省份拼音简写',
+  `code` varchar(6) not null default '000000' comment '全国代码',
+  `name` varchar(10) not null default '全国' comment '省份中文',
+  index idx_code(`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT '地区省份表';
+
+drop table if exists `city`;
+create table `city`(
+  `id` unsigned inter not null primary key,
+  `parent` varchar(6) not null comment '父级省',
+  `code` varchar(6) not null comment '市、区级代码',
+  `name` varchar(10) not null comment '市、区级名',
+  index un_key(`parent`, `code`)
+) ENGINE = InnoDB default CHARSET = utf8mb4 COMMENT '市区级表';
 
 # drop table if exists `keyword`;
 # create table `keyword` (
-#   `id` int(11) unsigned not null auto_increment comment 'pk',
+#   `id` int(11) unsigned not null auto_increment primary key comment 'pk',
 #   `name` varchar(40) character set utf8mb4 not null comment '关键字',
-#   `is_crawled` tinyint(1) not null default false comment '是否已爬取',
-#   `is_deleted` tinyint(1) not null default false comment '是否放弃爬取',
-#   `insert_time` timestamp not null default current_timestamp() comment '入库时间'
+#   `crawled` unsigned tinyint(1) not null default 0
+    comment '爬去状态, 0: 未爬取，1: 爬取中，2: 已爬取，3: 爬取失败, 4: 放弃爬取',
+#   `insert_at` timestamp not null default current_timestamp() comment '添加时间'
 # ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT '关键字表';
 

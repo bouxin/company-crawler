@@ -1,25 +1,11 @@
 """ mysql 配置 """
 MysqlConfig = {
     'development': {
-        'host': '127.0.0.1',
-        'port': 3306,
-        'db': 'geek',
-        'username': 'geek',
-        'password': 'Geek@123...'
-    },
-    'testing': {
-        'host': '127.0.0.1',
-        'port': 3306,
-        'db': 'geek',
-        'username': 'geek',
-        'password': 'Geek@123...'
-    },
-    'production': {
-        'host': '127.0.0.1',
-        'port': 3306,
-        'db': 'geek',
-        'username': 'geek',
-        'password': 'Geek@123...'
+        'host': '192.168.1.103',
+        'port': 3307,
+        'db': 'enterprise',
+        'username': 'root',
+        'password': 'root@123'
     }
 }
 
