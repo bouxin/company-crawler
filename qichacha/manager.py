@@ -23,10 +23,10 @@ class QichachaManager(object):
         company.company_type = raw_company.get('EconKind', '-')
         company.taxpayer_code = raw_company.get('CreditCode', '-')
         company.registered_capital = raw_company.get('RegistCapi', '-')
-        company.lat_long = {
+        company.lat_long = str({
             'lat': raw_company.get('X', '-'),
             'long': raw_company.get('Y', '-')
-        }
+        })
         company.setup_time = raw_company.get('StartDate', '-')
 
     @classmethod
