@@ -46,7 +46,7 @@ class Province(object):
         self.id = None
         self.code = 000000
         self.name = '全国'
-        self.short = 'CN'
+        self.simple = 'CN'
 
 
 class City(object):

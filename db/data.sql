@@ -37,7 +37,7 @@ CREATE TABLE `company` (
 drop table if exists `province`;
 create table `province`(
   `id` integer unsigned not null primary key,
-  `short` char(3)  null default 'CN' comment '省份拼音简写',
+  `simple` char(3)  null default 'CN' comment '省份拼音简写',
   `code` varchar(6)  null default '000000' comment '全国代码',
   `name` varchar(10)  null default '全国' comment '省份中文',
   index idx_code(`code`)
