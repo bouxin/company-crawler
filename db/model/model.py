@@ -35,7 +35,7 @@ class Company(object):
         self.keyword = '-'
 
     def __str__(self) -> str:
-        return "{}, {}".format(self.name, self.representative)
+        return ', '.join('%s: %s' % elem for elem in self.__dict__.items())
 
     def clear(self):
         self.__init__()
@@ -48,6 +48,9 @@ class Province(object):
         self.name = '全国'
         self.simple = 'CN'
 
+    def __str__(self) -> str:
+        return ', '.join('%s: %s' % elem for elem in self.__dict__.items())
+
 
 class City(object):
     def __init__(self):
@@ -55,4 +58,7 @@ class City(object):
         self.parent = 000000
         self.code = 000000
         self.name = '市区'
+
+    def __str__(self) -> str:
+        return ', '.join('%s: %s' % elem for elem in self.__dict__.items())
 

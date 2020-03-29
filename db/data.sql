@@ -56,7 +56,7 @@ create table `city`(
 # create table `keyword` (
 #   `id` int(11) unsigned not null auto_increment primary key comment 'pk',
 #   `name` varchar(40) character set utf8mb4  null comment '关键字',
-#   `crawled` unsigned tinyint(1)  null default 0 comment '爬去状态, 0: 未爬取，1: 爬取中，2: 已爬取，3: 爬取失败, 4: 放弃爬取',
+#   `status` unsigned tinyint(1)  null default 0 comment '状态, 0: 未爬取，1: 爬取中，2: 已爬取，3: 爬取失败, 4: 丢弃',
 #   `insert_at` timestamp not null default current_timestamp() comment '添加时间'
 # ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT '关键字表';
 

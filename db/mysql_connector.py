@@ -7,7 +7,6 @@
 
 from DBUtils.PooledDB import PooledDB
 from config.env import MysqlEnviron
-from db.model.model import Company
 import logging as log
 import pymysql
 
