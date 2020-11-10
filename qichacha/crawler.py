@@ -20,8 +20,7 @@ def start():
     keywords = globals().get('keywords')
     for keyword in keywords:
         raw_companies = qcc_client.search(keyword)
-        cost_time = 2 * raw_companies.__len__() + 4
-        log.info('正在处理爬取[%s]，大概需要%s秒' % (keyword, cost_time))
+        log.info('正在处理爬取[%s]' % keyword)
         # company对象
         company = Company()
         for raw_company in raw_companies:

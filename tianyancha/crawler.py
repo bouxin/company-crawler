@@ -22,8 +22,7 @@ def start():
     keys = globals().get('keywords', list())
     for key in keys:
         raw_companies = tyc_client.search(key)
-        cost_time = 2 * raw_companies.__len__()
-        log.info('正在处理爬取[%s]，大概需要%s秒' % (key, cost_time))
+        log.info('正在处理爬取[%s]' % key)
         # company对象
         company = Company()
         for raw_company in raw_companies:
