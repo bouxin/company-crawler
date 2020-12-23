@@ -37,9 +37,6 @@ class Company(object):
     def __str__(self) -> str:
         return ', '.join('%s: %s' % elem for elem in self.__dict__.items())
 
-    def clear(self):
-        self.__init__()
-
 
 class Province(object):
     def __init__(self):

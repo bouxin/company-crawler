@@ -8,8 +8,7 @@
 import logging as log
 from qichacha.client import QichachaClient
 from qichacha.manager import QichachaManager
-from db.model.model import Company
-from db.mysql_connector import insert as save
+from db.model import Company
 
 # 企查查客户端
 qcc_client = QichachaClient()

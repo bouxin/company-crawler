@@ -4,37 +4,22 @@
 :author: albert
 :date: 03/08/2019
 """
-import logging as log
-
-from db.model.model import Company
-from tianyancha.client import TianyanchaClient
-from tianyancha.manager import TianyanchaManager
-from db.mysql_connector import insert as save
-
-
-# 天眼查客户端
-tyc_client = TianyanchaClient()
-manager = TianyanchaManager()
+import logging
+from tianyancha.client import TycClient
 
 
 def start():
+    def __printall(items):
+        for elem in items:
+            print(elem.__str__())
+
     """ 入口函数 """
-    keys = globals().get('keywords', list())
+    keys = globals().get('keywords', [])
     for key in keys:
-        raw_companies = tyc_client.search(key)
-        log.info('正在处理爬取[%s]' % key)
-        # company对象
-        company = Company()
-        for raw_company in raw_companies:
-            company.keyword = key
-            manager.assembly(company, raw_company)
-            # company detail
-            raw_company_detail = tyc_client.search_detail(raw_company.get('id'))
-            manager.assembly_detail(company, raw_company_detail)
-            log.info(company)
-            # save(company.__dict__)
-            company.clear()
-    log.info("completed")
+        logging.info('正在采集[%s]...' % key)
+        companies = TycClient().search(key).companies
+        __printall(companies)
+    logging.info("completed")
 
 
 def load_keys(keys: list):

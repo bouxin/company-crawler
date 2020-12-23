@@ -5,19 +5,20 @@
 :date: 03/07/2019
 """
 
-from DBUtils.PooledDB import PooledDB
-from config.env import MysqlEnviron
+
+from dbutils.pooled_db import PooledDB
+from config import MysqlEnviron
 import logging as log
 import pymysql
 
 
 connection_pool = PooledDB(creator=pymysql,
                            maxconnections=20,
-                           host=MysqlEnviron.host(),
-                           port=MysqlEnviron.port(),
-                           db=MysqlEnviron.database(),
-                           user=MysqlEnviron.username(),
-                           passwd=MysqlEnviron.password())
+                           host=MysqlEnviron.host,
+                           port=MysqlEnviron.port,
+                           db=MysqlEnviron.database,
+                           user=MysqlEnviron.username,
+                           passwd=MysqlEnviron.password)
 
 
 def insert(data: dict):
@@ -46,11 +47,10 @@ def insert(data: dict):
           '`organization_code`=%(organization_code)s,`english_name`=%(english_name)s,' \
           '`authorization`=%(authorization)s,`homepage`=%(homepage)s,`used_name`=%(used_name)s,' \
           '`modify_at`=now()'
-    return write_tx(sql, data)
+    return write(sql, data)
 
 
-def write_tx(sql: str, data: any):
-    """ 写事务 """
+def write(sql: str, data: any):
     connection = connection_pool.connection()
     cursor = connection.cursor()
     result = cursor.execute(sql, data)
@@ -59,7 +59,7 @@ def write_tx(sql: str, data: any):
         connection.commit()
     except RuntimeError as error:
         connection.rollback()
-        log.error('事务提交失败！已回滚')
+        log.error('Insert Error!')
         raise error
 
     return result

@@ -3,77 +3,95 @@
 # @author lubosson
 # @since 2019-09-27
 # @description --
-from urllib import parse as url_encoder
-from const.constants import TIANYANCHA
-from util import httpclient
-from json import JSONDecodeError
-import time
-import logging as log
+import json
+import logging
 
-""" ua """
-UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36"
-""" 请求验证头 """
-AUTHORIZATION = '0###oo34J0WVDdeu_k1O-sWPxFpg9WJ4###1555940540033###028a568b0150721d810d5f4417e03650'
-""" 请求token """
-X_AUTH_TOKEN = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxODg3NTg5MjA3NSIsImlhdCI6MTU1NTk0MDU3MiwiZXhwIjoxNTU4NTMyNTcyfQ.lCJNDWQK0gD3fp9ieIlnMEzwmi00zkBqyHShdvHnspFzZQmgPHhHJAUY7mVbKY_AFk2Xhk82jMP99Q6a0wlmEQ"
-""" 天眼查头信息 """
-REQUEST_HEADERS = {
-    "User-Agent": UA,
-    "version": "TYC-XCX-WX",
-    "Host": "api3.tianyancha.com",
-    "Authorization": AUTHORIZATION,
-    'x-auth-token': X_AUTH_TOKEN
-}
+from db.models import Company
+from tianyancha import *
+from urllib.parse import quote
+from util.httpclient import Request
 
 
-class TianyanchaClient(object):
-    @classmethod
-    def search(cls, keyword: str) -> list:
+class TycClient:
+    def __init__(self, payload=None):
+        self.payload = payload
+        self.src = []
+        self.companies = []
+
+    def search(self, keyword: str):
         """
         根据关键字搜索相关企业信息
         :param keyword: 关键字
         :return:
         """
-        payload = {
-            "pageNum": 1,
-            "pageSize": 20,
-            "sortType": 0
-        }
-        url = TIANYANCHA.SEARCH_API + "/" + url_encoder.quote(keyword)
-        http_result = httpclient.get(url=url, params=payload, headers=REQUEST_HEADERS)
-        time.sleep(2)
-        if http_result.status_code == 200:
-            try:
-                api_result = http_result.json()  # api响应数据
-                if api_result.get('state') == 'ok':
-                    return api_result.get('data', dict()).get('companyList', list())
-                else:
-                    log.info(str(api_result))
-            except JSONDecodeError as error:
-                pass
-        else:
-            log.info(str(http_result.text))
-        return list()
+        if not self.payload:
+            self.payload = {
+                "pageNum": 1,
+                "pageSize": 20,
+                "sortType": 0
+            }
+        url = TycSearchApi.format(q=quote(keyword))
+        data = Request(url, self.payload, headers=REQUEST_HEADERS, proxy=True).data
+        if data:
+            api_data = json.loads(data)
+            if api_data.get("state") == 'ok':
+                self.src.append(api_data.get("data", {}).get("companyList", []))
+                self.__post_process__()
+            else:
+                logging.info("查询异常：[%s]" % api_data)
+        return self
 
-    @classmethod
-    def search_detail(cls, company_id: int):
-        """
-        根据公司ID查询公司信息详情
-        :param company_id:
-        :return: 公司详情json结果
-        """
-        url = TIANYANCHA.DETAIL_API + "/" + str(company_id)
-        http_result = httpclient.get(url=url, params=None, headers=REQUEST_HEADERS)
-        time.sleep(2)
-        if http_result.status_code == 200:
-            try:
-                api_result = http_result.json()  # api响应数据
-                if api_result.get('state') == 'ok':
-                    return api_result.get('data', dict())
-                else:
-                    log.info(str(api_result))
-            except JSONDecodeError as error:
-                pass
-        else:
-            log.info(str(http_result.text))
-        return dict()
+    def __post_process__(self):
+        """"""
+        if not self.src:
+            return
+
+        todos = self.src
+        for t in todos:
+            detail = Request(TycEntApi.format(eid=t.get("id")), proxy=True).data
+            if not detail:
+                continue
+            detail = json.loads(detail)
+            if detail.get("state") == 'ok':
+                td = detail.get("data", {})
+                company = Company()
+                # 复制主体信息
+                TycClient.TycEntHelper.__copy_props__(t, company)
+                # 复制公司组织代码、注册资本
+                TycClient.TycEntHelper.__copy_extras__(td, company)
+                self.companies.append(company)
+
+    class TycEntHelper:
+        @staticmethod
+        def __copy_props__(src: dict, target: Company):
+            target.name = src.get('name', '-').replace('<em>', '').replace('</em>', '')
+            target.representative = src.get('legalPersonName', '-')
+            target.address = src.get('regLocation', '-')
+            target.region = src.get('base', '-')
+            target.city = src.get('city', '-')
+            target.district = src.get('district', '-')
+            target.biz_status = src.get('regStatus', '-')
+            target.credit_code = src.get('creditCode', '-')
+            target.email = src.get('emails', ['-']).split(';')[0].replace('\t', '')
+            target.phone = src.get('phoneNum', '-')
+            target.biz_scope = src.get('businessScope', '-')
+            target.company_type = src.get('companyOrgType', '-').replace('\t', '')
+            target.taxpayer_code = src.get('creditCode', '-')
+            target.registered_capital = src.get('regCapital', '-')
+            target.lat_long = str({
+                'lat': src.get('latitude', '-'),
+                'long': src.get('longitude', '-')
+            })
+            target.setup_time = src.get('estiblishTime', '-')[0:10]
+
+        @staticmethod
+        def __copy_extras__(src: dict, company: Company):
+            company.homepage = src.get('websiteList', '-')
+            company.register_code = src.get('regNumber', '-')
+            company.organization_code = src.get('orgNumber', '-')
+            company.english_name = src.get('property3', '-')
+            company.authorization = src.get('regInstitute', '-')
+            company.actual_capital = src.get('actualCapital', '缺省')
+            company.industry = src.get('industry', '-')
+            company.used_name = src.get('historyNames', '-')
+

@@ -3,7 +3,7 @@
 # @author lubosson
 # @since 2019-09-27
 # @description --
-from db.model.model import Company
+from db.models import Company
 
 
 class QichachaManager(object):
