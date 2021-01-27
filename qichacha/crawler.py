@@ -8,7 +8,7 @@
 import logging as log
 from qichacha.client import QichachaClient
 from qichacha.manager import QichachaManager
-from db.model import Company
+from db.models import Company
 
 # 企查查客户端
 qcc_client = QichachaClient()
