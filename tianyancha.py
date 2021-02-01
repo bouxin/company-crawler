@@ -14,7 +14,7 @@ log.set_file("tianyancha.log")
 
 
 if __name__ == '__main__':
-    keys = ['Google']  # todo 查询字段设置
+    keys = ['Google']
     crawler.load_keys(keys)
     crawler.start()
 

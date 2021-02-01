@@ -29,10 +29,7 @@ def start():
             raw_company_detail = qcc_client.search_detail(raw_company.get('KeyNo'))
             # 补充公司详细信息
             manager.assembly_detail(company, raw_company_detail)
-            # 保存到数据库
-            # save(company.__dict__)
             log.info(company)
-            company.clear()
     log.info('completed')
 
 
