@@ -15,6 +15,7 @@ from util.httpclient import Request
 class TycClient:
     def __init__(self, payload=None):
         self.payload = payload
+        self.keyword = None
         self.src = []
         self.companies = []
 
@@ -24,6 +25,7 @@ class TycClient:
         :param keyword: 关键字
         :return:
         """
+        self.keyword = keyword
         if not self.payload:
             self.payload = {
                 "pageNum": 1,
@@ -31,11 +33,11 @@ class TycClient:
                 "sortType": 0
             }
         url = TycSearchApi.format(q=quote(keyword))
-        data = Request(url, self.payload, headers=REQUEST_HEADERS, proxy=True).data
+        data = Request(url, self.payload, proxy=True, headers=REQUEST_HEADERS).data
         if data:
             api_data = json.loads(data)
             if api_data.get("state") == 'ok':
-                self.src.append(api_data.get("data", {}).get("companyList", []))
+                self.src = api_data.get("data", {}).get("companyList", [])
                 self.__post_process__()
             else:
                 logging.info("查询异常：[%s]" % api_data)
@@ -48,13 +50,14 @@ class TycClient:
 
         todos = self.src
         for t in todos:
-            detail = Request(TycEntApi.format(eid=t.get("id")), proxy=True).data
+            detail = Request(TycEntApi.format(eid=t.get("id")), proxy=True, headers=REQUEST_HEADERS).data
             if not detail:
                 continue
             detail = json.loads(detail)
             if detail.get("state") == 'ok':
                 td = detail.get("data", {})
                 company = Company()
+                company.keyword = self.keyword
                 # 复制主体信息
                 TycClient.TycEntHelper.__copy_props__(t, company)
                 # 复制公司组织代码、注册资本
@@ -64,6 +67,7 @@ class TycClient:
     class TycEntHelper:
         @staticmethod
         def __copy_props__(src: dict, target: Company):
+            target.id = src.get('id', '-')
             target.name = src.get('name', '-').replace('<em>', '').replace('</em>', '')
             target.representative = src.get('legalPersonName', '-')
             target.address = src.get('regLocation', '-')

@@ -14,7 +14,7 @@ log.set_file("tianyancha.log")
 
 
 if __name__ == '__main__':
-    keys = ['Google']
+    keys = ['拉勾拉科技']
     crawler.load_keys(keys)
     crawler.start()
 

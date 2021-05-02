@@ -12,20 +12,20 @@ from config import GLOBAL_PROXY
 
 
 class Request:
-    def __init__(self, url, params=None, proxy=False, headers=None, **kwargs):
+    def __init__(self, url, params=None, proxy=False, **kwargs):
         self.proxy = proxy
         self.url = url
         self.params = params
         self.data = None
-        self.get(headers, **kwargs)
+        self.get(**kwargs)
 
-    def get(self, headers, **kwargs):
+    def get(self, **kwargs):
         p = proxy() if GLOBAL_PROXY and self.proxy else None
-        resp = requests.get(self.url, params=self.params, headers=headers, verify=False, proxies=p, **kwargs)
+        resp = requests.get(self.url, params=self.params, verify=False, proxies=p, **kwargs)
         if resp and resp.status_code == 200:
             self.data = resp.text
         else:
-            logging.warning(resp.json())
+            logging.warning(resp)
 
 
 def proxy():

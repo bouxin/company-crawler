@@ -3,7 +3,8 @@ ENV = "dev"
 
 # 全局代理控制
 GLOBAL_PROXY = True
-PROXY_POOL_URL = "http://localhost:5010"
+# PROXY_POOL_URL = "http://localhost:5010"
+PROXY_POOL_URL = "http://104.243.28.172:5010"
 
 """ mysql 配置 """
 MysqlConfig = {
