@@ -6,7 +6,10 @@
 
 ## 使用说明
 
-1. 设置数据源
+1. 设置用户状态
+    
+    抓包小程序，设置请求头里用户鉴权信息
+2. 设置数据源
     ```pydocstring
     MysqlConfig = {
         'develop': {
@@ -18,14 +21,14 @@
         }
     }
     ```
-2. 执行```db/data.sql```生成数据结构
-3. 配置IP代理```config/settings```
+3. 执行```db/data.sql```生成数据结构
+4. 配置IP代理```config/settings```
     ```pydocstring
     # 全局代理控制
     GLOBAL_PROXY = True
     PROXY_POOL_URL = "http://localhost:5010"
     ```
-4. 设置爬取关键字```qichacha```&```tianyancha```
+5. 设置爬取关键字```qichacha```&```tianyancha```
     ```pydocstring
     keys = ['Google'] # 设置爬取列表
     crawler.load_keys(keys)
