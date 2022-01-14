@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# @author lubosson
+# @author bouxin
 # @since 2019-09-27
 # @description --
 
@@ -8,31 +8,46 @@
 class Company(object):
     def __init__(self):
         self.id = None
-        self.name = '-'
-        self.representative = '-'
-        self.address = '-'
-        self.region = '-'
-        self.city = '-'
-        self.district = '-'
-        self.biz_status = '-'
-        self.credit_code = '-'
-        self.email = '-'
-        self.phone = '-'
-        self.biz_scope = '-'
-        self.company_type = '-'
-        self.taxpayer_code = '-'
-        self.registered_capital = '-'
-        self.lat_long = '-'
-        self.setup_time = '-'
-        self.homepage = '-'
-        self.register_code = '-'
-        self.organization_code = '-'
-        self.english_name = '-'
-        self.authorization = '-'
-        self.actual_capital = '-'
-        self.industry = '-'
-        self.used_name = '-'
-        self.keyword = '-'
+        self.name = None
+        self.short_name = None
+        self.representative = None
+        self.found_time = None
+        self.company_address = None
+        self.register_address = None
+        self.province = None
+        self.city = None
+        self.district = None
+        self.biz_status = None
+        # lat-long:: eg. {'latitude': '12.0023', 'longitude': '120.180'}
+        self.geoloc = None
+        self.emails = None
+        self.phones = None
+        self.contact = None
+        self.biz_scope = None
+        self.company_type = None
+        self.score = 50.00
+        self.register_capital = None
+        self.websites = None
+        self.credit_code = None
+        self.taxpayer_code = None
+        self.register_code = None
+        self.organization_code = None
+        self.tags = None
+        self.industry = None
+        self.keyword = None
+        self.logo = None
+        self.company_desc = None
+        self.financing_round = None
+        self.competitions = None
+
+        self.english_name = None
+        self.register_institute = None
+        self.actual_capital = None
+        self.used_name = None
+        self.stuffs = 1
+        self.tax_address = None
+        self.taxpayer_bank = None
+        self.portraits = None
 
     def __str__(self) -> str:
         return ', '.join('%s: %s' % elem for elem in self.__dict__.items())

@@ -28,17 +28,17 @@ def insert(data: dict):
     :return:
     """
     sql = 'insert into company(`name`,`representative`,`address`,`region`,`city`,`district`,' \
-          '`lat_long`,`biz_status`,`credit_code`,`register_code`,`phone`,`email`,`setup_time`,' \
+          '`geoloc`,`biz_status`,`credit_code`,`register_code`,`phone`,`email`,`setup_time`,' \
           '`industry`, `biz_scope`,`company_type`,`registered_capital`,`actual_capital`,' \
           '`taxpayer_code`, `organization_code`,`english_name`,`authorization`,`homepage`,' \
           '`used_name`,`create_at`, `modify_at`, `search_key`) ' \
           'values(%(name)s,%(representative)s,%(address)s,%(region)s,%(city)s,%(district)s,' \
-          '%(lat_long)s,%(biz_status)s,%(credit_code)s,%(register_code)s,%(phone)s,%(email)s,' \
+          '%(geoloc)s,%(biz_status)s,%(credit_code)s,%(register_code)s,%(phone)s,%(email)s,' \
           '%(setup_time)s, %(industry)s,%(biz_scope)s,%(company_type)s,%(registered_capital)s,' \
           '%(actual_capital)s, %(taxpayer_code)s,%(organization_code)s,%(english_name)s,' \
           '%(authorization)s,%(homepage)s, %(used_name)s,now(),now(), %(keyword)s) ' \
           'on duplicate key update `name`=%(name)s,`representative`=%(representative)s,' \
-          '`address`=%(address)s,`region`=%(region)s,`lat_long`=%(lat_long)s,' \
+          '`address`=%(address)s,`region`=%(region)s,`geoloc`=%(geoloc)s,' \
           '`biz_status`=%(biz_status)s,`credit_code`=%(credit_code)s,' \
           '`register_code`=%(register_code)s,`phone`=%(phone)s,`email`=%(email)s,' \
           '`setup_time`=%(setup_time)s,`industry`=%(industry)s,`biz_scope`=%(biz_scope)s,' \

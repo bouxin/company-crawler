@@ -10,11 +10,11 @@ import urllib3
 urllib3.disable_warnings()
 
 
-log.set_file("tianyancha.log")
+log.set_file("./logs/tianyancha.log")
 
 
 if __name__ == '__main__':
-    keys = ['如歌']
+    keys = ['谷歌']
     crawler.load_keys(keys)
     crawler.start()
 

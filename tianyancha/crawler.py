@@ -11,7 +11,7 @@ from tianyancha.client import TycClient
 def start():
     def __printall(items):
         for elem in items:
-            print(elem.__str__())
+            logging.info(elem.__str__())
 
     """ 入口函数 """
     keys = globals().get('keywords', [])
