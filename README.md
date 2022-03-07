@@ -7,8 +7,9 @@
 ## 使用说明
 
 1. 设置用户状态
-    
-    抓包小程序，设置请求头里用户鉴权信息
+   
+   抓包工具抓包天眼查、企查查小程序，设置请求头用户鉴权信息，在各自目录的<code>__init__.py</code>文件中
+   
 2. 设置数据源
     ```pydocstring
     MysqlConfig = {
@@ -35,6 +36,8 @@
     crawler.start()
     ```
    
-PS：**建议使用IP代理 + 随机UA，否者一定会被ban**
-1. 随机UA推荐[fake_useragent](https://github.com/hellysmile/fake-useragent)
-2. 代理池推荐[proxy_pool](https://github.com/jhao104/proxy_pool.git)
+
+###**推荐使用IP代理 + 随机UA**
+1. 随机UA[fake_useragent](https://github.com/hellysmile/fake-useragent)
+2. 代理池[proxy_pool](https://github.com/jhao104/proxy_pool.git)
+
