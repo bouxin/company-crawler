@@ -59,7 +59,7 @@ def write(sql: str, data: any):
         connection.commit()
     except RuntimeError as error:
         connection.rollback()
-        log.error('Insert Error!')
+        log.error('Insertion Error!')
         raise error
 
     return result

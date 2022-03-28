@@ -27,6 +27,9 @@ class Request:
         else:
             logging.warning(resp)
 
+    def post(self, **kwargs):
+        pass
+
 
 def proxy():
     import json

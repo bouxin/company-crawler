@@ -28,7 +28,7 @@ CREATE TABLE `company` (
   `used_name` varchar(500) CHARACTER SET utf8mb4  NULL DEFAULT '-' COMMENT '公司曾用名',
   `search_key` varchar(64) character set utf8mb4  null default '-' comment '搜索关键字',
   `create_at` timestamp not NULL DEFAULT CURRENT_TIMESTAMP COMMENT '插入时间',
-  `modify_at` timestamp not NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后操作时间',
+  `modify_at` timestamp DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '最后操作时间',
 #   index un_key() comment '联合索引',
   unique key uq_credit_reg_code(`credit_code`, `register_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT '企业信息表';
@@ -51,6 +51,8 @@ create table `city`(
   `name` varchar(10)  null comment '市、区级名',
   index un_key(`parent`, `code`)
 ) ENGINE = InnoDB default CHARSET = utf8mb4 COMMENT '市区级表';
+
+drop table if exists `open_enterprise_shareholder`
 
 # drop table if exists `keyword`;
 # create table `keyword` (

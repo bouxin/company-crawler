@@ -63,7 +63,7 @@ class TycClient:
             try:
                 # 公司主体融资阶段、竟品信息
                 brand_and_agency = filter(is_equal, self.brand_and_agencies).__next__()
-                TycClient.EntityHelper.__another_info__(brand_and_agency, company_entity)
+                TycClient.EntityHelper.__another_info__(company_entity, brand_and_agency)
             except:
                 logging.warning('竟品信息获取失败！')
                 pass
@@ -136,7 +136,7 @@ class TycClient:
             target.industry = src.get('categoryStr', '-')
 
         @staticmethod
-        def __another_info__(brand_and_agency: dict, company: Company):
+        def __another_info__(company: Company, brand_and_agency: dict):
             # 公司融资轮次
             company.financing_round = brand_and_agency.get("round", "未知")
             # 公司竟品信息
