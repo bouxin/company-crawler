@@ -21,13 +21,13 @@ connection_pool = PooledDB(creator=pymysql,
                            passwd=MysqlEnviron.password)
 
 
-def insert(data: dict):
+def insert_company(data: list):
     """
     插入操作
     :param data:
     :return:
     """
-    sql = 'insert into company(`name`,`representative`,`address`,`region`,`city`,`district`,' \
+    sql = 'insert into `company`(`name`,`representative`,`address`,`region`,`city`,`district`,' \
           '`geoloc`,`biz_status`,`credit_code`,`register_code`,`phone`,`email`,`setup_time`,' \
           '`industry`, `biz_scope`,`company_type`,`registered_capital`,`actual_capital`,' \
           '`taxpayer_code`, `organization_code`,`english_name`,`authorization`,`homepage`,' \
@@ -47,7 +47,29 @@ def insert(data: dict):
           '`organization_code`=%(organization_code)s,`english_name`=%(english_name)s,' \
           '`authorization`=%(authorization)s,`homepage`=%(homepage)s,`used_name`=%(used_name)s,' \
           '`modify_at`=now()'
-    return write(sql, data)
+    for company in data:
+        managers = company.managers
+        shareholders = company.shareholders
+        write(sql, company)
+        insert_company_manager(managers)
+        insert_company_shareholder(shareholders)
+
+
+def insert_company_shareholder(data: list):
+    sql = 'insert into `dim_shareholder`(`credit_code`, `name`, `alias`, `avatar`, `control_ratio`, `tags`) ' \
+          'values (%(credit_code)s, %s(name)s, %(alias)s, %(avatar)s, %(control_ratio)s, %(tags)s) ' \
+          'on duplicate key update `name`=%(name)s, `alias`=%(alias)s, `avatar`=%(avatar)s, ' \
+          '`control_ratio`=%(control_ratio)s, `tags`=%(tags)s'
+    for shareholder in data:
+        return write(sql, shareholder)
+
+
+def insert_company_manager(data: list):
+    sql = 'insert into `dim_company_manager`(`credit_code`, `name`, `titles`, `manager_type`) ' \
+          'values (%(credit_code)s, %(name)s, %(titles)s, %(manager_type)s)' \
+          'on duplicate key update `name`=%(name)s, `titles`=%(titles)s, `manager_type`=%(manager_type)s'
+    for manager in data:
+        return write(sql, manager)
 
 
 def write(sql: str, data: any):

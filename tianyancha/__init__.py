@@ -9,6 +9,9 @@ sys.path.append('..')
 
 TycQueryApi = "https://api9.tianyancha.com/services/v3/search/sNorV3/{q}"
 TycPortraitApi = "https://api9.tianyancha.com/services/v3/t/common/baseinfoV5/{eid}"
+TycShareholderPostApi = "https://capi.tianyancha.com/cloud-facade/company/familyBucket"
+TycEnterpriseManagerPostApi = "https://capi.tianyancha.com/cloud-facade/company/familyBucket"
+TycEnterpriseRiskApi = "https://api9.tianyancha.com/services/v3/risk/companyRiskInfoV4?{id}"
 
 """ 请求验证头 """
 AUTHORIZATION = '0###oo34J0VKzLlpdvf8kgFkMlfU_IPY###1642087379312###22494f3155c2e5a4be76e503837fa439'

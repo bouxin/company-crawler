@@ -33,10 +33,32 @@ CREATE TABLE `company` (
   unique key uq_credit_reg_code(`credit_code`, `register_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT '企业信息表';
 
+# 股东信息
+drop table if exists `dim_shareholder`;
+create table `dim_shareholder`(
+    `id` integer not null primary key auto_increment comment 'pk',
+    `credit_code` varchar(255) default null comment '企业社会信用代码',
+    `name` varchar(255) default null comment '股东名称',
+    `alias` varchar(255) default null comment '别称',
+    `avatar` varchar(255) default null comment '股东头像',
+    `control_ratio` varchar(255) default null comment '股东控股比例',
+    `tags` json default null comment '股东信息',
+    constraint unique index unq_index(`credit_code`, `name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT '企业股东信息表';
+
+drop table if exists `dim_company_manager`;
+create table `dim_company_manager`(
+    `id` integer not null primary key auto_increment comment 'pk',
+    `credit_code` varchar(255) default null comment '企业社会信用代码',
+    `name` varchar(255) default null comment '企业高管名称',
+    `titles` json default null comment '高管title',
+    `manager_type` varchar(255) default null comment '高管类型',
+    constraint unique index unq_index(`credit_code`, `name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT '企业高管信息表';
 
 drop table if exists `province`;
 create table `province`(
-  `id` integer unsigned not null primary key,
+  `id` integer unsigned not null primary key auto_increment comment 'pk',
   `simple` char(3)  null default 'CN' comment '省份拼音简写',
   `code` varchar(6)  null default '000000' comment '全国代码',
   `name` varchar(10)  null default '全国' comment '省份中文',
@@ -45,14 +67,12 @@ create table `province`(
 
 drop table if exists `city`;
 create table `city`(
-  `id` integer unsigned not null primary key,
+  `id` integer unsigned not null primary key auto_increment comment 'pk',
   `parent` varchar(6)  null comment '父级省',
   `code` varchar(6)  null comment '市、区级代码',
   `name` varchar(10)  null comment '市、区级名',
   index un_key(`parent`, `code`)
 ) ENGINE = InnoDB default CHARSET = utf8mb4 COMMENT '市区级表';
-
-drop table if exists `open_enterprise_shareholder`
 
 # drop table if exists `keyword`;
 # create table `keyword` (

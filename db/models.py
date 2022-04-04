@@ -39,15 +39,38 @@ class Company(object):
         self.company_desc = None
         self.financing_round = None
         self.competitions = None
-
         self.english_name = None
         self.register_institute = None
         self.actual_capital = None
         self.used_name = None
-        self.stuffs = 1
+        self.staffs = 1
         self.tax_address = None
         self.taxpayer_bank = None
         self.portraits = None
+        self.shareholders = []
+        self.managers = []
+
+    def __str__(self) -> str:
+        return ', '.join('%s: %s' % elem for elem in self.__dict__.items())
+
+
+class CompanyShareholder(object):
+    def __init__(self):
+        self.name = None
+        self.alias = None
+        self.avatar = None
+        self.control_ratio = None
+        self.tags = []
+
+    def __str__(self) -> str:
+        return ', '.join('%s: %s' % elem for elem in self.__dict__.items())
+
+
+class CompanyManager(object):
+    def __init__(self):
+        self.name = None
+        self.titles = []
+        self.manager_type = None
 
     def __str__(self) -> str:
         return ', '.join('%s: %s' % elem for elem in self.__dict__.items())

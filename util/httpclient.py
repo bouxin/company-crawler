@@ -12,12 +12,16 @@ from config import GLOBAL_PROXY
 
 
 class Request:
-    def __init__(self, url, params=None, proxy=False, **kwargs):
+    def __init__(self, url, method=None, params=None, proxy=False, **kwargs):
         self.proxy = proxy
         self.url = url
         self.params = params
         self.data = None
-        self.get(**kwargs)
+        self.method = method
+        if self.method == 'post':
+            self.post(**kwargs)
+        else:
+            self.get(**kwargs)
 
     def get(self, **kwargs):
         p = proxy() if GLOBAL_PROXY and self.proxy else None
@@ -28,8 +32,12 @@ class Request:
             logging.warning(resp)
 
     def post(self, **kwargs):
-        pass
-
+        p = proxy() if GLOBAL_PROXY and self.proxy else None
+        resp = requests.post(self.url, verify=False, proxies=p, **kwargs)
+        if resp and resp.status_code == 200:
+            self.data = resp.text
+        else:
+            logging.warning(resp)
 
 def proxy():
     import json

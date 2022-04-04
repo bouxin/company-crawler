@@ -6,7 +6,7 @@
 import json
 import logging
 
-from db.models import Company
+from db.models import Company, CompanyShareholder, CompanyManager
 from tianyancha import *
 from urllib.parse import quote
 from util.httpclient import Request
@@ -55,7 +55,7 @@ class TycClient:
             # 公司检索的关键字
             company_entity.keyword = self.keyword
             # 公司主体基本信息
-            TycClient.EntityHelper.__basic_info__(company, company_entity)
+            self.EntityHelper.__basic_info__(company, company_entity)
 
             def is_equal(b_and_a):
                 return company.get('id') == b_and_a.get('graphId')
@@ -63,17 +63,56 @@ class TycClient:
             try:
                 # 公司主体融资阶段、竟品信息
                 brand_and_agency = filter(is_equal, self.brand_and_agencies).__next__()
-                TycClient.EntityHelper.__another_info__(company_entity, brand_and_agency)
+                self.EntityHelper.__another_info__(brand_and_agency, company_entity)
             except:
                 logging.warning('竟品信息获取失败！')
                 pass
             """ 公司详情 """
+            # detail_resp = self.basic_api.get_enterprise_detail(company.get("id"))
             detail_resp = Request(TycPortraitApi.format(eid=company.get("id")), proxy=True, headers=REQUEST_HEADERS).data
             if detail_resp:
                 company_portrait = json.loads(detail_resp)
                 # 公司详情补充信息
                 if company_portrait.get("state") == 'ok':
-                    TycClient.EntityHelper.__additional__(company_portrait.get("data", {}), company_entity)
+                    self.EntityHelper.__additional__(company_portrait.get("data", {}), company_entity)
+
+            shareholder_request_body = {
+                "graphId": company.get("id"),
+                "hkVersion": 1,
+                "typeList": {
+                    "shareHolder": {
+                        "pageNum": 1,
+                        "pageSize": 20,
+                        "required": "true"
+                    }
+                }
+            }
+            """ 股东信息 """
+            shareholder_resp = Request(TycShareholderPostApi, method='post', json=shareholder_request_body, proxy=True, headers=REQUEST_HEADERS).data
+            if shareholder_resp:
+                company_shareholder = json.loads(shareholder_resp)
+                # 公司详情补充信息
+                if company_shareholder.get("state") == 'ok':
+                    self.EntityHelper.__shareholder__(company_shareholder.get("data", {}).get("shareHolder", {}), company_entity)
+
+            manager_request_body = {
+                "graphId": company.get("id"),
+                "hkVersion": 1,
+                "typeList": {
+                    "companyStaff": {
+                        "pageNum": 1,
+                        "pageSize": 20,
+                        "required": "true"
+                    }
+                }
+            }
+            """ 高管信息 """
+            manager_resp = Request(TycEnterpriseManagerPostApi, method='post', json=manager_request_body, proxy=True, headers=REQUEST_HEADERS).data
+            if manager_resp:
+                company_manager = json.loads(manager_resp)
+                # 公司详情补充信息
+                if company_manager.get("state") == 'ok':
+                    self.EntityHelper.__company_manager__(company_manager.get("data", {}).get("companyStaff", {}), company_entity)
             self.companies.append(company_entity)
 
     class EntityHelper:
@@ -136,7 +175,7 @@ class TycClient:
             target.industry = src.get('categoryStr', '-')
 
         @staticmethod
-        def __another_info__(company: Company, brand_and_agency: dict):
+        def __another_info__(brand_and_agency: dict, company: Company):
             # 公司融资轮次
             company.financing_round = brand_and_agency.get("round", "未知")
             # 公司竟品信息
@@ -161,9 +200,9 @@ class TycClient:
             # 公司曾用名
             company.used_name = src.get('historyNames', '-')
             # 公司员工人数
-            company.stuffs = src.get('socialStaffNum', None)
-            if not company.stuffs:
-                company.stuffs = src.get('staffNum', 1)
+            company.staffs = src.get('socialStaffNum', None)
+            if not company.staffs:
+                company.staffs = src.get('staffNum', 1)
             # 公司纳税地址
             company.tax_address = src.get('taxAddress', None)
             if not company.tax_address:
@@ -176,3 +215,28 @@ class TycClient:
                 company.logo = src.get('logo')
             if not company.company_desc:
                 company.company_desc = src.get('baseInfo', '-')
+
+        @staticmethod
+        def __shareholder__(src: dict, company: Company):
+            holder_list = src.get("holderList", [])
+            for holder in holder_list:
+                if holder:
+                    shareholder = CompanyShareholder()
+                    shareholder.name = holder.get("name")
+                    shareholder.alias = holder.get("alias")
+                    shareholder.avatar = holder.get("logo")
+                    shareholder.control_ratio = holder.get("proportion")
+                    shareholder.tags = [tag.get("name") for tag in holder.get("tagList", [])]
+                    company.shareholders.append(shareholder.__str__())
+
+        @staticmethod
+        def __company_manager__(src: dict, company: Company):
+            manager_list = src.get("result", [])
+            manager_type = src.get("staffTitle", "-")
+            for manager in manager_list:
+                company_manager = CompanyManager()
+                company_manager.manager_type = manager_type
+                company_manager.name = manager.get("name", "-")
+                company_manager.titles = manager.get("typeJoin", [])
+                company.managers.append(company_manager.__str__())
+
