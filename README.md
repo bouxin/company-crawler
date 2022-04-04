@@ -29,22 +29,7 @@
     GLOBAL_PROXY = True
     PROXY_POOL_URL = "http://localhost:5010"
     ```
-5. 入口函数设置db写入方法
-   ```python
-   def start():
-    def __printall(items):
-        for elem in items:
-            logging.info(elem.__str__()
-    keys = globals().get('keywords', [])
-    for key in keys:
-        logging.info('正在采集[%s]...' % key)
-        companies = TycClient().search(key).companies
-        # 写入db
-        # insert_company(companies)
-        __printall(companies)
-    logging.info("completed")
-   ```
-6. 设置爬取关键字```qichacha```&```tianyancha```
+5. 设置爬取关键字```qichacha```&```tianyancha```
     ```pydocstring
     keys = ['Google'] # 设置爬取列表
     crawler.load_keys(keys)

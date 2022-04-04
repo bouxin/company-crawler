@@ -39,6 +39,7 @@ class Request:
         else:
             logging.warning(resp)
 
+
 def proxy():
     import json
     from config.settings import PROXY_POOL_URL

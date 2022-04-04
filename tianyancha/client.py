@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# @author lubosson
+# @author sanfeng
 # @since 2019-09-27
 # @description --
 import json
@@ -68,7 +68,6 @@ class TycClient:
                 logging.warning('竟品信息获取失败！')
                 pass
             """ 公司详情 """
-            # detail_resp = self.basic_api.get_enterprise_detail(company.get("id"))
             detail_resp = Request(TycPortraitApi.format(eid=company.get("id")), proxy=True, headers=REQUEST_HEADERS).data
             if detail_resp:
                 company_portrait = json.loads(detail_resp)
