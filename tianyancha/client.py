@@ -226,7 +226,7 @@ class TycClient:
                     shareholder.avatar = holder.get("logo")
                     shareholder.control_ratio = holder.get("proportion")
                     shareholder.tags = [tag.get("name") for tag in holder.get("tagList", [])]
-                    company.shareholders.append(shareholder.__str__())
+                    company.shareholders.append(shareholder)
 
         @staticmethod
         def __company_manager__(src: dict, company: Company):
@@ -237,5 +237,5 @@ class TycClient:
                 company_manager.manager_type = manager_type
                 company_manager.name = manager.get("name", "-")
                 company_manager.titles = manager.get("typeJoin", [])
-                company.managers.append(company_manager.__str__())
+                company.managers.append(company_manager)
 
