@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-from uplink import *
 import logging
+
+from uplink import *
 
 AUTHORIZATION = '0###oo34J0VKzLlpdvf8kgFkMlfU_IPY###1642087379312###22494f3155c2e5a4be76e503837fa439'
 """ 请求token """
@@ -45,6 +46,7 @@ class TianyanchaBasicInfo(Consumer):
             base_url = "https://api9.tianyancha.com"
         super().__init__(base_url, client, converters, auth, hooks, **kwargs)
 
+    @returns.json
     @get("/services/v3/search/sNorV3/{q}")
     def list_by_page(self, keyword: Path("q"), page_num: Query("pageNum"), page_size: Query("pageSize"), sort_type: Query("sortType")):
         """

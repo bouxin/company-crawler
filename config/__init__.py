@@ -4,11 +4,13 @@
 :author: lubosin
 :date: 03/28/2019
 """
-import sys
 import logging as log
+import sys
+
+import config
 from config.settings import *
 
-sys.path.append('..')
+sys.path.append("..")
 
 
 class MysqlEnviron:

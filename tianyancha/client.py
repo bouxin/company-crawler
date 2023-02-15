@@ -34,7 +34,7 @@ class TycClient:
                 "sortType": 0
             }
         url = TycQueryApi.format(q=quote(keyword))
-        data = Request(url, self.payload, proxy=True, headers=REQUEST_HEADERS).data
+        data = Request(url, self.payload, headers=REQUEST_HEADERS).data
         if data:
             api_data = json.loads(data)
             if api_data.get("state") == 'ok':
@@ -68,7 +68,7 @@ class TycClient:
                 logging.warning('竟品信息获取失败！')
                 pass
             """ 公司详情 """
-            detail_resp = Request(TycPortraitApi.format(eid=company.get("id")), proxy=True, headers=REQUEST_HEADERS).data
+            detail_resp = Request(TycPortraitApi.format(eid=company.get("id")), headers=REQUEST_HEADERS).data
             if detail_resp:
                 company_portrait = json.loads(detail_resp)
                 # 公司详情补充信息
@@ -87,7 +87,7 @@ class TycClient:
                 }
             }
             """ 股东信息 """
-            shareholder_resp = Request(TycShareholderPostApi, method='post', json=shareholder_request_body, proxy=True, headers=REQUEST_HEADERS).data
+            shareholder_resp = Request(TycShareholderPostApi, method='post', json=shareholder_request_body, headers=REQUEST_HEADERS).data
             if shareholder_resp:
                 company_shareholder = json.loads(shareholder_resp)
                 # 公司详情补充信息
@@ -106,7 +106,7 @@ class TycClient:
                 }
             }
             """ 高管信息 """
-            manager_resp = Request(TycEnterpriseManagerPostApi, method='post', json=manager_request_body, proxy=True, headers=REQUEST_HEADERS).data
+            manager_resp = Request(TycEnterpriseManagerPostApi, method='post', json=manager_request_body, headers=REQUEST_HEADERS).data
             if manager_resp:
                 company_manager = json.loads(manager_resp)
                 # 公司详情补充信息

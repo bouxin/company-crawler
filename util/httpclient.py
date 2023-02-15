@@ -6,13 +6,14 @@
 :desc: http请求工具类
 """
 import logging
+
 import requests
 
-from config import GLOBAL_PROXY
+from config import GLOBAL_PROXY, PROXY_POOL_URL
 
 
 class Request:
-    def __init__(self, url, method=None, params=None, proxy=False, **kwargs):
+    def __init__(self, url, method=None, params=None, proxy=True, **kwargs):
         self.proxy = proxy
         self.url = url
         self.params = params
@@ -42,10 +43,15 @@ class Request:
 
 def proxy():
     import json
-    from config.settings import PROXY_POOL_URL
+    r = requests.get(f"{PROXY_POOL_URL}/get")
+    if r and r.status_code == 200:
+        p = json.loads(r.text)
+        if p['https']:
+            return {"http": "https://%s" % p.get("proxy")}
+        else:
+            return {"http": "http://%s" % p.get("proxy")}
 
-    p = Request(f"{PROXY_POOL_URL}/get").data
-    if p:
-        p = json.loads(p)
-        return {"http": "http://%s" % p.get("proxy")}
 
+if __name__ == '__main__':
+    print(proxy())
+    

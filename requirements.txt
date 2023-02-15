@@ -6,3 +6,4 @@ PyMySQL
 redis
 requests
 urllib3
+uplink
