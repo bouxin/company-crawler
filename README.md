@@ -10,7 +10,7 @@
    
 2. 设置数据源
     ```pydocstring
-    MysqlConfig = {
+    MYSQL_CONFIG = {
         'develop': {
             'host': '192.168.1.103',
             'port': 3306,
@@ -46,7 +46,7 @@
 <br />
 <br />
 
-Please Kindly Note
+Please Kindly Note That
 ===
 
 程序员技术交流tg群，欢迎大家加入！！！
@@ -55,6 +55,6 @@ Please Kindly Note
 
 Telegram群链接：[程序员社区https://t.me/+iZK2y8zMUiE0NDE1](https://t.me/+iZK2y8zMUiE0NDE1)
 
-Telegram群二维码：
+群二维码：
 
 <img width='200' src='https://i.imgur.com/R62JrQX.png'>
